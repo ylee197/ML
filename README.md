@@ -27,5 +27,8 @@ In this project experimented with various Reinforcement Learning Approximate met
 - Running Analysis.ipynb
   : Put the Q-learning, Episode semi-gradient SARSA and True online SARSA algorithm result files in the same directory with the program. 
 
+## Outout
+ - Output directory has output file. 
+
 ## Modified by
    Yeonjung LEE
