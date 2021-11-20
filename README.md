@@ -13,7 +13,7 @@ In this project experimented with various Reinforcement Learning Approximate met
     
 ## Executing
 - Executing each algorithm :
-  # python pacman.py -p ApproximateQAgent -a extractor=SimpleExtractor -x 50 -n 60 -l mediumGrid
+  ### python pacman.py -p ApproximateQAgent -a extractor=SimpleExtractor -x 50 -n 60 -l mediumGrid
   : Above command line execute ApproximateQAgent, 50 times training and 10 times testing. Using environment is mediumGrid. 
   : Approximate Q-leanring algorithm => ApproximateQAgent
   : Episode semi-gradient SARSA algorithm => SemiGradientSarsaAgent
