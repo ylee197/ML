@@ -307,7 +307,7 @@ class TrueOnlineSarsaAgent(ApproximateQAgent):
             
                 for f_key in x.keys():
                     self.z[f_key] = (self.discount * self.lamda * self.z[f_key]) + (1-self.alpha * self.discount * self.lamda * self.z[f_key] * x[f_key])*x[f_key]
-                    self.weights[f_key] += self.alpha * delta * z[f_key] + self.alpha*(Q_prime - Q)*(self.z[f_key]-x[f_key])
+                    self.weights[f_key] += self.alpha * delta * self.z[f_key] + self.alpha*(Q_prime - Q)*(self.z[f_key]-x[f_key])
         return self.weights
 
     def getQValue(self, state, action):
