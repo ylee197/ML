@@ -357,35 +357,3 @@ class TrueOnlineSarsaAgent(ApproximateQAgent):
             "*** YOUR CODE HERE ***"
             #print (self.getWeights())
             pass
-
-
-
-    
-
-'''
-    def update(self, state, action, nextState, reward):
-        """
-           Should update your weights based on transition
-        """
-        "*** YOUR CODE HERE ***"
-        #print('**NextState**')
-        #print(nextState)
-        #print(self.getLegalActions(nextState))
-        #print('**State**')
-        #print(state)
-        #print(self.getLegalActions(state)) 
-        if len(self.getLegalActions(state)) != 0:
-            features = self.featExtractor.getFeatures(state, action)
-            nextAction = self.getPolicy(nextState)
-            x = self.featExtractor.getFeatures(state, action)
-            x_prime = self.featExtractor.getFeatures(nextState, nextAction)
-
-            Q = self.getQValue(state, action)
-            Q_prime = self.getQValue(nextState, nextAction)
-            delta = reward + self.discount * Q_prime - Q
-
-            for f_key in features.keys():
-                self.z[f_key] = self.discount * self.lamda * self.z[f_key] + (1-self.alpha*self.discount*self.lamda*self.z[f_key]*x[f_key])*x[f_key]
-                self.weights[f_key] += self.alpha*(delta + Q - self.Q_old)*self.z[f_key] - self.alpha*(Q-self.Q_old)*x[f_key]
-            self.Q_old = Q_prime
-'''
