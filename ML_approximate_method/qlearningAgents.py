@@ -199,22 +199,14 @@ class ApproximateQAgent(PacmanQAgent):
           Should return Q(state,action) = w * featureVector
           where * is the dotProduct operator
         """
-        "*** YOUR CODE HERE ***"
-        #print(self.featExtractor)
         
         w = self.getWeights()
         featureVector = self.featExtractor.getFeatures(state, action)
         
         Q_value = w * featureVector
         return Q_value
-    
-        #util.raiseNotDefined()
 
     def update(self, state, action, nextState, reward):
-        """
-           Should update your weights based on transition
-        """
-        "*** YOUR CODE HERE ***"
         diff = (reward + self.discount * self.computeValueFromQValues(nextState)) - self.getQValue(state, action)
         
         features = self.featExtractor.getFeatures(state, action)
@@ -223,26 +215,14 @@ class ApproximateQAgent(PacmanQAgent):
             self.weights[f_key] += self.alpha * diff * features[f_key]
 
     def final(self, state):
-        "Called at the end of each game."
-        # call the super-class final method
         PacmanQAgent.final(self, state)
 
         # did we finish training?
         if self.episodesSoFar == self.numTraining:
-            # you might want to print your weights here for debugging
-            "*** YOUR CODE HERE ***"
-            #print (self.getWeights())
             pass
 
         
 class SemiGradientSarsaAgent(ApproximateQAgent):
-    """
-       ApproximateQLearningAgent
-
-       You should only have to overwrite getQValue
-       and update.  All other QLearningAgent functions
-       should work as is.
-    """
     def __init__(self, extractor='IdentityExtractor', **args):
         self.featExtractor = util.lookup(extractor, globals())()
         PacmanQAgent.__init__(self, **args)
@@ -250,10 +230,6 @@ class SemiGradientSarsaAgent(ApproximateQAgent):
 
 
     def update(self, state, action, nextState, reward):
-            """
-               Should update your weights based on transition
-            """
-            "*** YOUR CODE HERE ***"
 
             diff = (reward + self.discount * self.computeValueFromQValues(nextState)) - self.getQValue(state, action)
 
@@ -266,20 +242,13 @@ class SemiGradientSarsaAgent(ApproximateQAgent):
                 for f_key in features.keys():
                     # Choosing nextAction
                     nextAction = self.getPolicy(nextState)
-                    #diff = (reward + self.discount * self.computeValueFromQValues(nextState)) - self.getQValue(state, action)
+                    # For the semi gradient model, it needs to calculate the differences between the previous one and current one.
                     diff = (reward + self.discount * self.getQValue(nextState, nextAction)) - self.getQValue(state, action)
 
                     self.weights[f_key] += self.alpha * diff * features[f_key]
                     
                     
 class TrueOnlineSarsaAgent(ApproximateQAgent):
-    """
-       ApproximateQLearningAgent
-
-       You should only have to overwrite getQValue
-       and update.  All other QLearningAgent functions
-       should work as is.
-    """
     def __init__(self, extractor='IdentityExtractor', **args):
         self.featExtractor = util.lookup(extractor, globals())()
         PacmanQAgent.__init__(self, **args)
@@ -290,6 +259,7 @@ class TrueOnlineSarsaAgent(ApproximateQAgent):
         self.lamda = 0.9
         self.G = 0
         
+    # Calculation for each weight. This weight needs to be recalculated from the first episode to the end in each episode. 
     def getWeights(self):
         if len(self.sequence) == 1:
             features = self.featExtractor.getFeatures(self.sequence[0][0], self.sequence[0][1])
@@ -311,22 +281,14 @@ class TrueOnlineSarsaAgent(ApproximateQAgent):
         return self.weights
 
     def getQValue(self, state, action):
-        """
-          Should return Q(state,action) = w * featureVector
-          where * is the dotProduct operator
-        """
-        "*** YOUR CODE HERE ***"
         w = self.weights
         featureVector = self.featExtractor.getFeatures(state, action)
         
         Q_value = w * featureVector
         return Q_value
     
+    # The recalculated new weight, the weight updates.
     def update(self, state, action, nextState, reward):
-        """
-           Should update your weights based on transition
-        """
-        "*** YOUR CODE HERE ***"
         
         self.sequence.append([state , action, reward])
         if len(self.getLegalActions(nextState)) != 0:
@@ -347,13 +309,11 @@ class TrueOnlineSarsaAgent(ApproximateQAgent):
             
             
     def final(self, state):
-        "Called at the end of each game."
         # call the super-class final method
         PacmanQAgent.final(self, state)
 
         # did we finish training?
         if self.episodesSoFar == self.numTraining:
             # you might want to print your weights here for debugging
-            "*** YOUR CODE HERE ***"
             #print (self.getWeights())
             pass
